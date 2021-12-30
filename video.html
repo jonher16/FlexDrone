@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.0.0/video-js.min.css" integrity="sha512-zki7IiwYvLzVZouKA+V/vtIuW7cK8M2ug1kaRBItuBWG8TDvA6jrtjhKPOrz3RFGpt9OQC/xE7DUfsrHxoBXxg==" crossorigin="anonymous" />
+    <script type="text/javascript" src="jsmpeg.min.js"></script>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <canvas width="200%" height="100vh"id="video-canvas"></canvas>
+	<script type="text/javascript" src="jsmpeg.min.js"></script>
+	<script type="text/javascript">
+		var canvas = document.getElementById('video-canvas');
+		var url = 'ws://'+document.location.hostname+':3001/stream';
+		var player = new JSMpeg.Player(url, {canvas: canvas});
+	</script>
+</html>

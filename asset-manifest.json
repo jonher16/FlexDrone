@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/flexdrone/static/css/main.baf536cf.chunk.css",
+    "main.js": "/flexdrone/static/js/main.9abba33c.chunk.js",
+    "main.js.map": "/flexdrone/static/js/main.9abba33c.chunk.js.map",
+    "runtime-main.js": "/flexdrone/static/js/runtime-main.e940c9f8.js",
+    "runtime-main.js.map": "/flexdrone/static/js/runtime-main.e940c9f8.js.map",
+    "static/js/2.f6915591.chunk.js": "/flexdrone/static/js/2.f6915591.chunk.js",
+    "static/js/2.f6915591.chunk.js.map": "/flexdrone/static/js/2.f6915591.chunk.js.map",
+    "static/js/3.6ed50788.chunk.js": "/flexdrone/static/js/3.6ed50788.chunk.js",
+    "static/js/3.6ed50788.chunk.js.map": "/flexdrone/static/js/3.6ed50788.chunk.js.map",
+    "index.html": "/flexdrone/index.html",
+    "static/css/main.baf536cf.chunk.css.map": "/flexdrone/static/css/main.baf536cf.chunk.css.map",
+    "static/js/2.f6915591.chunk.js.LICENSE.txt": "/flexdrone/static/js/2.f6915591.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e940c9f8.js",
+    "static/js/2.f6915591.chunk.js",
+    "static/css/main.baf536cf.chunk.css",
+    "static/js/main.9abba33c.chunk.js"
+  ]
+}
