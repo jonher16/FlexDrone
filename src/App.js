@@ -449,7 +449,7 @@ function App() {
               layout={{
                 responsive: true,
                 autosize: true,
-                title: selection,
+                title: (selection.charAt(0).toUpperCase() + selection.slice(1)),
                 plot_bgcolor: "#2b2b2b",
                 paper_bgcolor: "#2b2b2b",
                 font: {
