@@ -12,6 +12,7 @@ import Col from "react-bootstrap/Col";
 import Iframe from "react-iframe";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import Video from "./components/Video";
 
 const ENDPOINT = "http://127.0.0.1:4001";
 const socket = io(ENDPOINT);
@@ -28,37 +29,53 @@ function App() {
   }, []);
 
   const [telnames, setTelnames] = useState([]);
-  const [telemetry, setTelemetry] = useState({pitch: [], roll: [], yaw: [], agx: [], agy: [], agz: [], vgx: [], vgy: [], vgz: [], bat: [], baro: [], h: [], time: [], templ: [], temph: []});
-  const [selection, setSelection] = useState("pitch")
+  const [telemetry, setTelemetry] = useState({
+    pitch: [],
+    roll: [],
+    yaw: [],
+    agx: [],
+    agy: [],
+    agz: [],
+    vgx: [],
+    vgy: [],
+    vgz: [],
+    bat: [],
+    baro: [],
+    h: [],
+    time: [],
+    templ: [],
+    temph: [],
+  });
+  const [selection, setSelection] = useState("pitch");
 
   const [key, setKey] = useState("control");
   const [valueno, setValueno] = useState([]);
 
   const handleSelection = (e, sel) => {
     e.preventDefault();
-    setSelection(sel)
-  }
+    setSelection(sel);
+  };
   useEffect(() => {
     socket.on("telemetry", (msg) => {
       //console.log(msg);
       setTelnames(Object.keys(msg));
-      delete telnames["tof"]
-      
+      delete telnames["tof"];
+
       setTelemetry((telemetry) => ({
-      pitch: [...telemetry.pitch, msg.pitch],
-      roll: [...telemetry.roll, msg.roll],
-      yaw: [...telemetry.yaw, msg.yaw],
-      agx: [...telemetry.agx, msg.agx],
-      agy: [...telemetry.agy, msg.agy],
-      agz: [...telemetry.agz, msg.agz],
-      vgx: [...telemetry.vgx, msg.vgx],
-      vgy: [...telemetry.vgy, msg.vgy],
-      vgz: [...telemetry.vgz, msg.vgz],
-      bat: [...telemetry.bat, msg.bat],
-      baro: [...telemetry.baro, msg.baro],
-      h: [...telemetry.h, msg.h],
-      templ: [...telemetry.templ, (msg.templ-32)*5/9],
-      temph: [...telemetry.temph, (msg.temph-32)*5/9],
+        pitch: [...telemetry.pitch, msg.pitch],
+        roll: [...telemetry.roll, msg.roll],
+        yaw: [...telemetry.yaw, msg.yaw],
+        agx: [...telemetry.agx, msg.agx],
+        agy: [...telemetry.agy, msg.agy],
+        agz: [...telemetry.agz, msg.agz],
+        vgx: [...telemetry.vgx, msg.vgx],
+        vgy: [...telemetry.vgy, msg.vgy],
+        vgz: [...telemetry.vgz, msg.vgz],
+        bat: [...telemetry.bat, msg.bat],
+        baro: [...telemetry.baro, msg.baro],
+        h: [...telemetry.h, msg.h],
+        templ: [...telemetry.templ, ((msg.templ - 32) * 5) / 9],
+        temph: [...telemetry.temph, ((msg.temph - 32) * 5) / 9],
       }));
 
       var date = new Date();
@@ -392,46 +409,47 @@ function App() {
           <Tab eventKey="data" title="Data">
             <div className="  d-inline-flex h-100 p-2 w-100 d-flex-row justify-content-center">
               <div className="  p-5 d-flex-column w-50 align-items-start justify-content-start">
-                <h3 className="text-start">Pitch: {telemetry?.pitch}</h3>
-                <h3 className="text-start">Roll: {telemetry?.roll}</h3>
-                <h3 className="text-start">Yaw: {telemetry?.yaw}</h3>
+                <h3 className="text-start">Pitch: {telemetry?.pitch[telemetry.pitch.length-1]}</h3>
+                <h3 className="text-start">Roll: {telemetry?.roll[telemetry.roll.length-1]}</h3>
+                <h3 className="text-start">Yaw: {telemetry?.yaw[telemetry.yaw.length-1]}</h3>
                 <h3 className="text-start">
-                  Velocity (X axis): {telemetry?.vgx}
+                  Velocity (X axis): {telemetry?.vgx[telemetry.vgx.length-1]}
                 </h3>
                 <h3 className="text-start">
-                  Velocity (Y axis): {telemetry?.vgy}
+                  Velocity (Y axis): {telemetry?.vgy[telemetry.vgy.length-1]}
                 </h3>
                 <h3 className="text-start">
-                  Velocity (Z axis): {telemetry?.vgz}
+                  Velocity (Z axis): {telemetry?.vgz[telemetry.vgz.length-1]}
                 </h3>
                 <h3 className="text-start">
-                  Acceleration (X axis): {telemetry?.agx}
+                  Acceleration (X axis): {telemetry?.agx[telemetry.agx.length-1]}
                 </h3>
                 <h3 className="text-start">
-                  Acceleration (Y axis): {telemetry?.agy}
+                  Acceleration (Y axis): {telemetry?.agy[telemetry.agy.length-1]}
                 </h3>
                 <h3 className="text-start">
-                  Acceleration (Z axis): {telemetry?.agz}
+                  Acceleration (Z axis): {telemetry?.agz[telemetry.agz.length-1]}
                 </h3>
               </div>
               <div className=" d-inline-flex-column p-5 w-50 align-items-start justify-content-start">
-                <h3 className="text-start">Height: {telemetry?.h}</h3>
-                <h3 className="text-start">Battery: {telemetry?.bat}</h3>
+                <h3 className="text-start">Height: {telemetry?.h[telemetry.h.length-1]}</h3>
+                <h3 className="text-start">Battery: {telemetry?.bat[telemetry.bat.length-1]}</h3>
                 <h3 className="text-start">
-                  Temp_Low: {(((telemetry?.templ - 32) * 5) / 9).toFixed(2)}
+                  Temp_Low: {(((telemetry?.templ[telemetry.templ.length-1] - 32) * 5) / 9).toFixed(2)}
                 </h3>
                 <h3 className="text-start">
-                  Temp_High: {(((telemetry?.temph - 32) * 5) / 9).toFixed(2)}
+                  Temp_High: {(((telemetry?.temph[telemetry.temph.length-1] - 32) * 5) / 9).toFixed(2)}
                 </h3>
-                <h3 className="text-start">Barometer: {telemetry?.baro}</h3>
+                <h3 className="text-start">Barometer: {telemetry?.baro[telemetry.baro.length-1]}</h3>
               </div>
             </div>
           </Tab>
           <Tab eventKey="charts" width="100%" title="Charts">
             <DropdownButton id="dropdown-basic-button" title="Graph">
-              {
-              telnames.map((name) => (
-                <Dropdown.Item onClick={(e)=>handleSelection(e, name)}>{name}</Dropdown.Item>
+              {telnames.map((name) => (
+                <Dropdown.Item onClick={(e) => handleSelection(e, name)}>
+                  {name}
+                </Dropdown.Item>
               ))}
             </DropdownButton>
 
@@ -449,7 +467,7 @@ function App() {
               layout={{
                 responsive: true,
                 autosize: true,
-                title: (selection.charAt(0).toUpperCase() + selection.slice(1)),
+                title: selection.charAt(0).toUpperCase() + selection.slice(1),
                 plot_bgcolor: "#2b2b2b",
                 paper_bgcolor: "#2b2b2b",
                 font: {
@@ -465,14 +483,7 @@ function App() {
             />
           </Tab>
           <Tab eventKey="video" className="tab_style" title="Video">
-            <Iframe
-              className="videoframe"
-              url="video.html"
-              id="myId"
-              display="initial"
-              height="900px"
-              position="relative"
-            />
+            <Video />
           </Tab>
         </Tabs>
       </div>

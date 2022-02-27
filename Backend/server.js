@@ -3,7 +3,6 @@
 const http = require('http'); //Require http to create a http server
 const dgram = require('dgram'); //Packet to interact via UDP on Node.js
 const wait = require('waait'); //Packet for waiting an amount of time
-const commandDelays = require('./commandDelays'); //File with all the Tello command delays
 const socketIo = require("socket.io"); //Packet to send commands over SocketIo
 const WebSocket = require('ws'); //Packet to send video over WebSocket
 const spawn = require('child_process').spawn; //Packet to spawn ffmpeg over a separate process
