@@ -3,13 +3,14 @@ import Button from "react-bootstrap/Button";
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import HeaderNav from "./components/HeaderNav";
+import Data from "./components/Data"
+import Graph from "./components/Graph"
 import { Tab } from "bootstrap";
 import Plot from "react-plotly.js";
 import Tabs from "react-bootstrap/esm/Tabs";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Iframe from "react-iframe";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Video from "./components/Video";
@@ -18,6 +19,7 @@ const ENDPOINT = "http://127.0.0.1:4001";
 const socket = io(ENDPOINT);
 
 function App() {
+
   const handleButton = (e, comando) => {
     e.preventDefault();
     socket.emit("comando", comando);
@@ -46,15 +48,11 @@ function App() {
     templ: [],
     temph: [],
   });
-  const [selection, setSelection] = useState("pitch");
-
+ 
   const [key, setKey] = useState("control");
-  const [valueno, setValueno] = useState([]);
+  const [time, setTime] = useState([]);
 
-  const handleSelection = (e, sel) => {
-    e.preventDefault();
-    setSelection(sel);
-  };
+  
   useEffect(() => {
     socket.on("telemetry", (msg) => {
       //console.log(msg);
@@ -79,7 +77,7 @@ function App() {
       }));
 
       var date = new Date();
-      setValueno((valueno) => [...valueno, date]);
+      setTime((time) => [...time, date]);
     });
   }, []);
 
@@ -100,7 +98,6 @@ function App() {
     document.addEventListener("keydown", (e) => {
       if (e.code === "KeyW" && flagW === false) {
         console.log("W");
-
         socket.emit("comando", `rc 0 ${vel} 0 0`);
         flagW = true;
       } else if (e.code === "KeyS" && flagS === false) {
@@ -405,82 +402,11 @@ function App() {
               </Row>
             </Container>
           </Tab>
-
           <Tab eventKey="data" title="Data">
-            <div className="  d-inline-flex h-100 p-2 w-100 d-flex-row justify-content-center">
-              <div className="  p-5 d-flex-column w-50 align-items-start justify-content-start">
-                <h3 className="text-start">Pitch: {telemetry?.pitch[telemetry.pitch.length-1]}</h3>
-                <h3 className="text-start">Roll: {telemetry?.roll[telemetry.roll.length-1]}</h3>
-                <h3 className="text-start">Yaw: {telemetry?.yaw[telemetry.yaw.length-1]}</h3>
-                <h3 className="text-start">
-                  Velocity (X axis): {telemetry?.vgx[telemetry.vgx.length-1]}
-                </h3>
-                <h3 className="text-start">
-                  Velocity (Y axis): {telemetry?.vgy[telemetry.vgy.length-1]}
-                </h3>
-                <h3 className="text-start">
-                  Velocity (Z axis): {telemetry?.vgz[telemetry.vgz.length-1]}
-                </h3>
-                <h3 className="text-start">
-                  Acceleration (X axis): {telemetry?.agx[telemetry.agx.length-1]}
-                </h3>
-                <h3 className="text-start">
-                  Acceleration (Y axis): {telemetry?.agy[telemetry.agy.length-1]}
-                </h3>
-                <h3 className="text-start">
-                  Acceleration (Z axis): {telemetry?.agz[telemetry.agz.length-1]}
-                </h3>
-              </div>
-              <div className=" d-inline-flex-column p-5 w-50 align-items-start justify-content-start">
-                <h3 className="text-start">Height: {telemetry?.h[telemetry.h.length-1]}</h3>
-                <h3 className="text-start">Battery: {telemetry?.bat[telemetry.bat.length-1]}</h3>
-                <h3 className="text-start">
-                  Temp_Low: {(((telemetry?.templ[telemetry.templ.length-1] - 32) * 5) / 9).toFixed(2)}
-                </h3>
-                <h3 className="text-start">
-                  Temp_High: {(((telemetry?.temph[telemetry.temph.length-1] - 32) * 5) / 9).toFixed(2)}
-                </h3>
-                <h3 className="text-start">Barometer: {telemetry?.baro[telemetry.baro.length-1]}</h3>
-              </div>
-            </div>
+            <Data telemetry={telemetry} />
           </Tab>
           <Tab eventKey="charts" width="100%" title="Charts">
-            <DropdownButton id="dropdown-basic-button" title="Graph">
-              {telnames.map((name) => (
-                <Dropdown.Item onClick={(e) => handleSelection(e, name)}>
-                  {name}
-                </Dropdown.Item>
-              ))}
-            </DropdownButton>
-
-            <Plot
-              className="plot"
-              data={[
-                {
-                  x: valueno,
-                  y: telemetry[selection],
-                  type: "scatter",
-                  mode: "lines+markers",
-                  marker: { color: "lightgray" },
-                },
-              ]}
-              layout={{
-                responsive: true,
-                autosize: true,
-                title: selection.charAt(0).toUpperCase() + selection.slice(1),
-                plot_bgcolor: "#2b2b2b",
-                paper_bgcolor: "#2b2b2b",
-                font: {
-                  color: "#afb1b3",
-                },
-                yaxis: {
-                  gridcolor: "#3c3f41",
-                },
-                xaxis: {
-                  gridcolor: "#3c3f41",
-                },
-              }}
-            />
+            <Graph time={time} telemetry={telemetry} telnames={telnames}/>
           </Tab>
           <Tab eventKey="video" className="tab_style" title="Video">
             <Video />

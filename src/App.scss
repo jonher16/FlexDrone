@@ -60,6 +60,11 @@ $theme-colors: (
   width: 95vw;
   
 }
+
+.title_style {
+  color: $lightgray !important;
+}
+
 .btn-primary
 {
   background-color: $primary;
@@ -67,7 +72,7 @@ $theme-colors: (
 }
 
 .videoframe {
-height: 100%;
-width: 100%;
+height: 70vh;
+width: 100vw;
 }
 
