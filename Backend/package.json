@@ -1,4 +1,7 @@
 {
+  "main": "server.js",
+  "author": "Jon Hernandez",
+  "description": "Node backend for FlexDrone",
   "dependencies": {
     "dgram": "^1.0.1",
     "socket.io": "^4.4.0",
