@@ -11,9 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Video from "../components/Video";
 
-
-
-const Tello = ({socket}) => {
+const Tello = ({ socket }) => {
 
   const handleButton = (e, command) => {
     e.preventDefault();
@@ -33,14 +31,18 @@ const Tello = ({socket}) => {
 
   useEffect(() => {
     socket.on("msg", (msg) => console.log("From server -->", msg));
-    socket.on("tellostart", (msg) => {if(msg === "telloactive"){
-        console.log("From server: Tello is Active!")
-        setIsTelloActive(true)
-    }});
-    socket.on("tellostop", (msg) => {if(msg === "tellonotactive"){
-        console.log("From server: Tello is not active anymore")
-        setIsTelloActive(false)
-    }});
+    socket.on("tellostart", (msg) => {
+      if (msg === "telloactive") {
+        console.log("From server: Tello is Active!");
+        setIsTelloActive(true);
+      }
+    });
+    socket.on("tellostop", (msg) => {
+      if (msg === "tellonotactive") {
+        console.log("From server: Tello is not active anymore");
+        setIsTelloActive(false);
+      }
+    });
   }, []);
 
   const [telnames, setTelnames] = useState([]);
@@ -64,26 +66,28 @@ const Tello = ({socket}) => {
 
   const [key, setKey] = useState("control");
   const [time, setTime] = useState([]);
-  const [isTelloActive, setIsTelloActive] = useState(false)
+  const [isTelloActive, setIsTelloActive] = useState(false);
 
   useEffect(() => {
     socket.on("telemetry", (msg) => {
       //console.log(msg);
       setTelnames(Object.keys(msg));
       delete telnames["tof"];
-      var flag_max = false
+      var flag_max = false;
       var temp_telemetry = telemetry;
       var date = new Date();
       for (let x in temp_telemetry) {
         if (temp_telemetry[x.toString()].length >= 50) {
           temp_telemetry[x.toString()].shift();
-          flag_max = true
+          flag_max = true;
         }
         temp_telemetry[x.toString()].push(msg[x.toString()]);
       }
       setTelemetry(temp_telemetry);
       //console.log(flag_max)
-      setTime((time) => flag_max === false ? ([...time, date]):(time.shift() && [...time,date]));
+      setTime((time) =>
+        flag_max === false ? [...time, date] : time.shift() && [...time, date]
+      );
     });
   }, []);
 
@@ -190,19 +194,23 @@ const Tello = ({socket}) => {
           onSelect={(k) => setKey(k)}
         >
           <Tab eventKey="control" title="Control">
-              {isTelloActive ? <Button
-              style={{ width: "200px" }}
-              className="ml-3 mt-3"
-              onClick={(e) => handleStopConnection(e)}
-            >
-              Stop connection
-            </Button> : <Button
-              style={{ width: "200px" }}
-              className="ml-3 mt-3"
-              onClick={(e) => handleStartConnection(e)}
-            >
-              Start connection
-            </Button> }
+            {isTelloActive ? (
+              <Button
+                style={{ width: "200px" }}
+                className="ml-3 mt-3"
+                onClick={(e) => handleStopConnection(e)}
+              >
+                Stop connection
+              </Button>
+            ) : (
+              <Button
+                style={{ width: "200px" }}
+                className="ml-3 mt-3"
+                onClick={(e) => handleStartConnection(e)}
+              >
+                Start connection
+              </Button>
+            )}
 
             <Container className=" w-75 mt-5" fluid>
               {/* Up/Down Row */}
@@ -427,7 +435,9 @@ const Tello = ({socket}) => {
             <Graph time={time} telemetry={telemetry} telnames={telnames} />
           </Tab>
           <Tab eventKey="video" className="tab_style" title="Video">
+            <div className="d-flex flex-row justify-content-center">
             <Video />
+            </div>
           </Tab>
         </Tabs>
       </div>
