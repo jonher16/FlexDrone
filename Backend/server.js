@@ -177,7 +177,7 @@ function startTelloStream() {
     // streamer.on("exit", function(code){
     //     console.log("Failure", code);
     // });
-  }, 3000);
+  }, 1000);
   
 }
 
