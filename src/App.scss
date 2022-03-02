@@ -47,7 +47,7 @@ $theme-colors: (
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
-.App {
+.Tello {
 
   color: $lightgray !important;
   background-color: $darkgray;
@@ -63,6 +63,7 @@ $theme-colors: (
 
 .title_style {
   color: $lightgray !important;
+  cursor: pointer !important;
 }
 
 .btn-primary
@@ -74,5 +75,73 @@ $theme-colors: (
 .videoframe {
 height: 70vh;
 width: 100vw;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 5vh;
+  margin-top: 1vh;
+  height: 80vh !important;
+}
+
+.lang_button {
+  margin-top: 2vh;
+  margin-left: 1vw;
+  color: #bbb !important;
+  background-color: #3c3f41 !important;
+}
+
+.title {
+  margin-top: 5vh;
+  font-size: 5rem;
+}
+
+.container {
+  
+  //Quitar las siguientes dos lineas para juntar items
+  justify-content: center;
+  display: flex;
+  text-decoration: none;
+}
+
+.option_icon {
+  transform: scale(5);
+  
+}
+.option {
+  max-width: 200px;
+  min-width: 200px;
+  min-height: 200px;
+  max-height: 200px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    padding-top: 3rem !important;
+    background-color: #3c3f41;
+    text-align: center;
+    transition: transform .2s;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      &:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+      }
+}
+
+.option__title {
+  margin-top: 3vh;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 25px;
+}
+
+.option_ico {
+
+width: 100%;
+height: 100%;
 }
 
