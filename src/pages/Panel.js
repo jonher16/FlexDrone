@@ -53,9 +53,6 @@ export default function Panel({}) {
       <HeaderNav onClick={(e)=>handleClick(e, "Panel")}/>
       {choice === "Panel" ? (
         <>
-      <Button className="lang_button" variant="primary">
-            Euskara
-          </Button>
           <div className="main">
             <Container className="container" fluid>
               <Row>
