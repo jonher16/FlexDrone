@@ -42,11 +42,20 @@ const options = [
 
 export default function Panel({}) {
   const [choice, setChoice] = useState("Panel");
+  const [telloStatus, setTelloStatus] = useState("")
 
   const handleClick = (e, choice) => {
     e.preventDefault()
     setChoice(choice);
   };
+
+  useEffect(() => {
+    socket.on("tellostatus", (status) => {
+      console.log("Tello status from server",status)
+      setTelloStatus(status)
+    });
+  }, [])
+  
 
   return (
     <>
@@ -74,7 +83,7 @@ export default function Panel({}) {
                 {/* <Col className="d-flex justify-content-center w-3 text-decoration-none" xs="12" lg="6" md="6" style={{padding: "1rem"}}><a style={{textDecoration: "none"}} href={cocina.link}><Option title={cocina.title} image={cocina.image} /></a></Col> */}
               </Row>
             </Container>
-          </div></>) : choice == "Tello" ? (<Tello socket={socket} />) : (<ASDK socket={socket} />)}
+          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket} />)}
           
         
     </>

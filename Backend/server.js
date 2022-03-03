@@ -38,8 +38,8 @@ server.listen(port, ip, () => {
 DRONE_TYPE = null;
 
 const TELLO_HOST = "192.168.10.1";
-FLAG_TELLO_ONLINE = false;
-FLAG_TELLO_STREAM = false;
+let FLAG_TELLO_ONLINE = false;
+let FLAG_TELLO_STREAM = false;
 var stream;
 
 const PORT_CONTROL = 8889;
@@ -85,24 +85,26 @@ webSocketServer.broadcast = function (data) {
   });
 };
 
-//FUNCTIONS
+//DGRAM SOCKETS
 
-const drone = dgram.createSocket("udp4");
-drone.bind(PORT_CONTROL);
-console.log(`Drone UDP socket started at port ${PORT_CONTROL}`);
-const telemetry = dgram.createSocket("udp4");
-telemetry.bind(PORT_TELEMETRY);
-console.log(`Telemetry UDP socket started at port ${PORT_TELEMETRY}`);
+var drone;
+var telemetry;
+
 
 //Main function to start UDP sockets, send "command" and "battery" to drone and start video stream
 function startTello() {
-  console.log("Starting Tello connection");
+  printStatus("Starting Tello connection");
+  drone = dgram.createSocket("udp4");
+  telemetry = dgram.createSocket("udp4");
+  drone.bind(PORT_CONTROL);
+  telemetry.bind(PORT_TELEMETRY);
+  printStatus(`Drone UDP socket started at port ${PORT_CONTROL}`)
+  printStatus(`Telemetry UDP socket started at port ${PORT_TELEMETRY}`)
   FLAG_TELLO_ONLINE = true;
   sendStartCommand();
 
   drone.on("message", (message) => {
-    console.log(`Message from Drone: ${message}`);
-    io.emit("msg", `Message from Drone: ${message}`);
+    printStatus(`Message from Drone: ${message}`)
   });
   telemetry.on("message", (message) => {
     //MESSAGE ---> "battery:90;height:50"
@@ -117,12 +119,6 @@ function startTello() {
   startTelloStream()
 }
 
-function stopTello(){
-  console.log("Stoping Tello connection")
-  killTelloStream()
-  FLAG_TELLO_ONLINE = false
-}
-
 //Functions for handling errors
 function handleError(err) {
   if (err) {
@@ -135,8 +131,15 @@ function handleStart(err) {
     console.log("START ERROR.");
     console.log(err);
   } else {
-    console.log("Tello online check");
+    printStatus("<Command> command sent successfully");
   }
+}
+
+//Function for transmitting status messages to client
+
+function printStatus(msg){
+  console.log(msg)
+  io.emit("msg", msg)
 }
 
 //Function for starting video stream
@@ -148,7 +151,7 @@ function startTelloStream() {
   drone.send("streamon", PORT_CONTROL, TELLO_HOST, null);
   }
   test = false
-  console.log("Starting Tello stream...");
+  printStatus("Starting Tello stream...");
   //5. Begin the ffmpeg stream. You must have Tello connected first
   // Delay for 3 seconds before we start ffmpeg
   setTimeout(function () {
@@ -170,8 +173,7 @@ function startTelloStream() {
 
     // Spawn an ffmpeg instance
     stream = spawn("ffmpeg", args);
-    console.log("Tello stream started.")
-    io.emit("msg", "Tello stream started.")
+    printStatus("Tello stream started.")
     // Uncomment if you want to see ffmpeg stream info
     // streamer.stderr.pipe(process.stderr);
     // streamer.on("exit", function(code){
@@ -183,16 +185,29 @@ function startTelloStream() {
 
 //Function for killing video stream
 function killTelloStream() {
-  io.emit("msg","Tello stream closed.");
   stream.kill("SIGINT");
-  console.log("Tello stream closed.");
+  printStatus("Tello stream closed.");
 }
 
 //Function to send "command" and "battery" commands every 20 secs
+
+var timeout;
+
 function sendStartCommand() {
   drone.send("command", 0, 7, PORT_CONTROL, TELLO_HOST, handleStart);
   drone.send("battery?", 0, 8, PORT_CONTROL, TELLO_HOST, handleError);
-  setTimeout(sendStartCommand, 20000);
+  timeout = setTimeout(sendStartCommand, 20000);
+}
+
+function stopTello(){
+  printStatus("Stoping Tello connection")
+  killTelloStream()
+  clearTimeout(timeout)
+  drone.close()
+  telemetry.close()
+  printStatus(`Drone UDP socket closed at port ${PORT_CONTROL}`);
+  printStatus(`Telemetry UDP socket closed at port ${PORT_TELEMETRY}`);
+  FLAG_TELLO_ONLINE = false
 }
 
 //SOCKET.IO LISTENERS
@@ -200,22 +215,23 @@ function sendStartCommand() {
 io.on("connection", (socket) => {
   console.log("A user has connected with id " + socket.id);
   io.emit("msg", "Welcome, new user");
-
+  if(FLAG_TELLO_ONLINE === true){
+    io.emit("tellostatus", true);
+  } else {
+    io.emit("tellostatus", false);
+  }
   socket.on("tellostart", () => {
     startTello();
-    io.emit("tellostart", "telloactive");
   });
   socket.on("tellostop", () => {
     stopTello();
-    io.emit("tellostop", "tellonotactive");
   });
 
   socket.on("command", (command) => {
     //io.emit("comando_py", `Comando ${command} recibido`);
     if (FLAG_TELLO_ONLINE === true) {
-      console.log("Comando " + command + " recibido.");
+      printStatus("Comando " + command + " recibido.");
       process.stdout.write(command + "\n");
-      io.emit("msg", `Comando ${command} recibido`);
       drone.send(
         command,
         0,

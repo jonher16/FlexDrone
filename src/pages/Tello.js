@@ -11,7 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Video from "../components/Video";
 
-const Tello = ({ socket }) => {
+const Tello = ({ socket, tellostatus }) => {
 
   const handleButton = (e, command) => {
     e.preventDefault();
@@ -22,28 +22,24 @@ const Tello = ({ socket }) => {
   const handleStartConnection = (e) => {
     e.preventDefault();
     socket.emit("tellostart");
+    setIsTelloActive(true);
   };
 
   const handleStopConnection = (e) => {
     e.preventDefault();
     socket.emit("tellostop");
+    setIsTelloActive(false);
   };
 
   useEffect(() => {
     socket.on("msg", (msg) => console.log("From server -->", msg));
-    socket.on("tellostart", (msg) => {
-      if (msg === "telloactive") {
-        console.log("From server: Tello is Active!");
-        setIsTelloActive(true);
-      }
-    });
-    socket.on("tellostop", (msg) => {
-      if (msg === "tellonotactive") {
-        console.log("From server: Tello is not active anymore");
-        setIsTelloActive(false);
-      }
-    });
   }, []);
+
+  useEffect(() => {
+    console.log(tellostatus)
+    setIsTelloActive(tellostatus)
+  }, [tellostatus])
+  
 
   const [telnames, setTelnames] = useState([]);
   const [telemetry, setTelemetry] = useState({
@@ -67,6 +63,10 @@ const Tello = ({ socket }) => {
   const [key, setKey] = useState("control");
   const [time, setTime] = useState([]);
   const [isTelloActive, setIsTelloActive] = useState(false);
+
+  // useEffect(() => {
+  //   console.log("Tello local var ", isTelloActive)
+  // }, [isTelloActive])
 
   useEffect(() => {
     socket.on("telemetry", (msg) => {
