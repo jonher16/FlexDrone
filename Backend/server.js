@@ -222,9 +222,11 @@ io.on("connection", (socket) => {
   }
   socket.on("tellostart", () => {
     startTello();
+    io.emit("tellostatus", true)
   });
   socket.on("tellostop", () => {
     stopTello();
+    io.emit("tellostatus", false)
   });
 
   socket.on("command", (command) => {

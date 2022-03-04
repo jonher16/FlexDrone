@@ -32,7 +32,7 @@ const socket = io(`http://${SOCKET_IP}:4001/`);
 const options = [
   {
     title: "Tello",
-    image: <GiDragonfly className="option_icon" />,
+    image: <GiDeliveryDrone className="option_icon" />,
   },
   {
     title: "ASDK",

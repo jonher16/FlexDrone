@@ -2,8 +2,22 @@ import React from "react";
 import { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import "../App.scss";
+import JSMpeg from "@cycjimmy/jsmpeg-player";
+
+const ffmpegIP = "localhost";
 
 const ASDK = ({ socket }) => {
+
+    useEffect(() => {
+        var videoUrl = `ws://${ffmpegIP}:3001/stream`;
+        var player = new JSMpeg.VideoElement("#video-canvas", videoUrl, {
+          autoplay: true,
+        });
+        console.log(player);
+    }, []);
+
+    
+
   const handleCommand = (e, command) => {
     e.preventDefault();
     socket.emit("uxcommand", command);
@@ -48,7 +62,7 @@ const ASDK = ({ socket }) => {
                 <Button
                   variant="primary"
                   style={{ width: "120px" }}
-                  onClick={(e) => handleCommand(e, "zoomin")}
+                  onClick={(e) => handleCommand(e, "START")}
                 >
                   Camera start
                 </Button>

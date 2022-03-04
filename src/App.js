@@ -1,5 +1,4 @@
 
-import Tello from "./pages/Tello"
 import Panel from "./pages/Panel"
 import "./App.scss"
 
