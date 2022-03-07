@@ -1,3 +1,5 @@
+///Backend/server.js
+
 //REQUIREMENTS
 
 const http = require("http"); //Require http to create a http server
@@ -7,9 +9,6 @@ const socket = require("socket.io"); //Packet to send commands over SocketIo
 const WebSocket = require("ws"); //Packet to send video over WebSocket
 const { NONAME } = require("dns");
 const spawn = require("child_process").spawn; //Packet to spawn ffmpeg over a separate process
-
-//.env init
-
 require("dotenv").config();
 
 //SocketIo Server Declarations
@@ -33,9 +32,9 @@ server.listen(port, ip, () => {
   console.log(`Server running at http://${ip}:${port}/`);
 });
 
-//CONSTANT and VARIABLE DECLARATIONS
+//VARIABLE DECLARATIONS
 
-DRONE_TYPE = null;
+var DRONE_TYPE = null;
 
 const TELLO_HOST = "192.168.10.1";
 let FLAG_TELLO_ONLINE = false;
@@ -45,7 +44,10 @@ var stream;
 const PORT_CONTROL = 8889;
 const PORT_TELEMETRY = 8890;
 
-FLAG_ASDK_ONLINE = false;
+var FLAG_ASDK_ONLINE = false;
+
+var drone;
+var telemetry;
 
 //TELLO VIDEO STREAM SERVER
 
@@ -85,12 +87,6 @@ webSocketServer.broadcast = function (data) {
   });
 };
 
-//DGRAM SOCKETS
-
-var drone;
-var telemetry;
-
-
 //Main function to start UDP sockets, send "command" and "battery" to drone and start video stream
 function startTello() {
   printStatus("Starting Tello connection");
@@ -120,6 +116,7 @@ function startTello() {
 }
 
 //Functions for handling errors
+
 function handleError(err) {
   if (err) {
     console.log("ERROR");
@@ -143,7 +140,6 @@ function printStatus(msg){
 }
 
 //Function for starting video stream
-
 function startTelloStream() {
   FLAG_TELLO_STREAM = true;
   var test = true
@@ -172,6 +168,7 @@ function startTelloStream() {
     ];
 
     // Spawn an ffmpeg instance
+
     stream = spawn("ffmpeg", args);
     printStatus("Tello stream started.")
     // Uncomment if you want to see ffmpeg stream info
@@ -184,6 +181,7 @@ function startTelloStream() {
 }
 
 //Function for killing video stream
+
 function killTelloStream() {
   stream.kill("SIGINT");
   printStatus("Tello stream closed.");
@@ -230,7 +228,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("command", (command) => {
-    //io.emit("comando_py", `Comando ${command} recibido`);
+    
     if (FLAG_TELLO_ONLINE === true) {
       printStatus("Comando " + command + " recibido.");
       process.stdout.write(command + "\n");
@@ -248,7 +246,7 @@ io.on("connection", (socket) => {
   socket.on("uxmsg", (msg) => {
     console.log("Message from DJI UX App --> ", msg);
     io.emit("msg","UX app connected.")
-    ASDK_ONLINE = true;
+    FLAG_ASDK_ONLINE = true;
     // setTimeout(function () {
     //   io.emit("gimbalcommand", "GIMBAL")
     // }, 3000);
