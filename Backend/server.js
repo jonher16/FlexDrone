@@ -248,6 +248,7 @@ io.on("connection", (socket) => {
   socket.on("uxmsg", (msg) => {
     console.log("Message from DJI UX App --> ", msg);
     io.emit("msg","UX app connected.")
+    io.emit("uxconnectionok")
     ASDK_ONLINE = true;
     // setTimeout(function () {
     //   io.emit("gimbalcommand", "GIMBAL")
