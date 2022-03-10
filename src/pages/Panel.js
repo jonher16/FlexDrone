@@ -83,7 +83,7 @@ export default function Panel({}) {
                 {/* <Col className="d-flex justify-content-center w-3 text-decoration-none" xs="12" lg="6" md="6" style={{padding: "1rem"}}><a style={{textDecoration: "none"}} href={cocina.link}><Option title={cocina.title} image={cocina.image} /></a></Col> */}
               </Row>
             </Container>
-          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket} />)}
+          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket}/>)}
           
         
     </>

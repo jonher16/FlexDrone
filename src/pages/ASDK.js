@@ -1,19 +1,17 @@
 import React from "react";
 import { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import Iframe from "react-iframe";
 import "../App.scss";
-import JSMpeg from "@cycjimmy/jsmpeg-player";
 
-const ffmpegIP = "localhost";
+const UX_APP_IP = process.env.REACT_APP_UX_IP;
+console.log(UX_APP_IP)
 
 const ASDK = ({ socket }) => {
 
     useEffect(() => {
-        var videoUrl = `ws://${ffmpegIP}:3001/stream`;
-        var player = new JSMpeg.VideoElement("#video-canvas", videoUrl, {
-          autoplay: true,
-        });
-        console.log(player);
+        socket.on("msg", (msg) => console.log("From server -->", msg));
+        
     }, []);
 
     
@@ -34,10 +32,11 @@ const ASDK = ({ socket }) => {
             sm={6}
             className="d-flex justify-content-center w-100 mt-5"
           >
-            <div
+            <Iframe url={`http://${UX_APP_IP}:8080`} width="900px" height="500px"/>
+            {/* <div
               id="video-canvas"
               style={{ height: "300px", width: "500px" }}
-            ></div>
+            ></div> */}
           </Col>
           {/* Video Column Close */}
 
@@ -56,15 +55,41 @@ const ASDK = ({ socket }) => {
                       </Button>
                     </div> */}
 
-              {/* Zoomin div*/}
-
+              {/* Lock/UnlockStop div*/}
               <div className="d-flex mt-1 justify-content-center w-100">
                 <Button
                   variant="primary"
-                  style={{ width: "120px" }}
-                  onClick={(e) => handleCommand(e, "START")}
+                  style={{ width: "150px" }}
+                  onClick={(e) => handleCommand(e, "GET_GIMBAL_STATE")}
                 >
-                  Camera start
+                 Get gimbal state
+                </Button>
+              </div>
+              <div className="d-flex mt-1 justify-content-center w-100">
+                <Button
+                  variant="primary"
+                  style={{ width: "140px" }}
+                  onClick={(e) => handleCommand(e, "STOP")}
+                >
+                  Stop Gimbal
+                </Button>
+              </div>
+              <div className="d-flex mt-1 justify-content-center w-100">
+                <Button
+                  variant="primary"
+                  style={{ width: "140px" }}
+                  onClick={(e) => handleCommand(e, "UNLOCK")}
+                >
+                  Unlock Gimbal
+                </Button>
+              </div>
+              <div className="d-flex mt-1 justify-content-center w-100">
+                <Button
+                  variant="primary"
+                  style={{ width: "140px" }}
+                  onClick={(e) => handleCommand(e, "LOCK")}
+                >
+                  Lock Gimbal
                 </Button>
               </div>
 
@@ -75,7 +100,7 @@ const ASDK = ({ socket }) => {
                 <div className="d-flex justify-content-around w-100">
                   <Button
                     style={{ width: "120px", height: "auto" }}
-                    onClick={(e) => handleCommand(e, "up")}
+                    onClick={(e) => handleCommand(e, "UP")}
                   >
                     Tilt Up
                   </Button>
@@ -94,7 +119,7 @@ const ASDK = ({ socket }) => {
                     >
                       <Button
                         style={{ width: "120px" }}
-                        onClick={(e) => handleCommand(e, "left")}
+                        onClick={(e) => handleCommand(e, "LEFT")}
                       >
                         Pan Left
                       </Button>
@@ -105,7 +130,7 @@ const ASDK = ({ socket }) => {
                     >
                       <Button
                         style={{ width: "120px" }}
-                        onClick={(e) => handleCommand(e, "right")}
+                        onClick={(e) => handleCommand(e, "RIGHT")}
                       >
                         Pan Right
                       </Button>
@@ -116,7 +141,7 @@ const ASDK = ({ socket }) => {
                 <div className="d-flex justify-content-around mt-2">
                   <Button
                     style={{ width: "120px" }}
-                    onClick={(e) => handleCommand(e, "down")}
+                    onClick={(e) => handleCommand(e, "DOWN")}
                   >
                     Tilt Down
                   </Button>

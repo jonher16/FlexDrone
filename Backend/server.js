@@ -244,18 +244,19 @@ io.on("connection", (socket) => {
   });
 
   socket.on("uxmsg", (msg) => {
-    console.log("Message from DJI UX App --> ", msg);
-    io.emit("msg","UX app connected.")
-    io.emit("uxconnectionok")
-    FLAG_ASDK_ONLINE = true;
-    // setTimeout(function () {
-    //   io.emit("gimbalcommand", "GIMBAL")
-    // }, 3000);
+    printStatus(msg)
   });
 
   socket.on("uxcommand", (command) => {
     console.log(`Command ${command} received. Sending to app.`)
     io.emit("gimbalcommand", command)
+  });
+
+  socket.on("uxconnection", (msg) => {
+    io.emit("msg","UX app connected.");
+    FLAG_ASDK_ONLINE = true;
+    console.log(msg)
+    io.emit("uxconnection")
   });
 
   socket.on("disconnect", () => {
