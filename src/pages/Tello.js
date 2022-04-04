@@ -192,6 +192,7 @@ const Tello = ({ socket, tellostatus }) => {
           onSelect={(k) => setKey(k)}
         >
           <Tab eventKey="control" title="Control">
+            
             {isTelloActive ? (
               <Button
                 style={{ width: "200px" }}

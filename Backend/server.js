@@ -34,8 +34,6 @@ server.listen(port, ip, () => {
 
 //VARIABLE DECLARATIONS
 
-var DRONE_TYPE = null;
-
 const TELLO_HOST = "192.168.10.1";
 let FLAG_TELLO_ONLINE = false;
 let FLAG_TELLO_STREAM = false;
@@ -242,7 +240,6 @@ io.on("connection", (socket) => {
       );
     }
   });
-
   socket.on("uxmsg", (msg) => {
     printStatus(msg)
   });
