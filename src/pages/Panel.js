@@ -82,7 +82,7 @@ export default function Panel({}) {
                 
               </Row>
             </Container>
-          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket} SOCKET_IP={SOCKET_IP} ANDROID_IP={addresses.android}/>)}
+          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket} SOCKET_IP={SOCKET_IP} SOCKET_PORT={SOCKET_PORT} ANDROID_IP={addresses.android}/>)}
           
         
     </>

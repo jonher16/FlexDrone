@@ -7,7 +7,7 @@ import DraggableVideo from "../components/DraggableVideo";
 import JSMpeg from "@cycjimmy/jsmpeg-player";
 import GimbalControl from "../components/GimbalControl";
 
-const ASDK = ({ socket, ANDROID_IP, SOCKET_IP }) => {
+const ASDK = ({ socket, ANDROID_IP, SOCKET_IP, SOCKET_PORT }) => {
 
   useEffect(() => {
     socket.on("msg", (msg) => console.log("From server -->", msg));
@@ -24,7 +24,7 @@ const ASDK = ({ socket, ANDROID_IP, SOCKET_IP }) => {
   return (
     <div className="w-100">
 
-      <DraggableVideo socket={socket} ANDROID_IP={ANDROID_IP} SOCKET_IP={SOCKET_IP} />
+      <DraggableVideo socket={socket} ANDROID_IP={ANDROID_IP} SOCKET_IP={SOCKET_IP} SOCKET_PORT={SOCKET_PORT}/>
       {/* <GimbalControl onClick={handleCommand} width="100%" /> */}
      
       
