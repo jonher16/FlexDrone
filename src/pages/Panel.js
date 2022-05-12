@@ -11,11 +11,13 @@ import { useEffect } from "react";
 
 
 const SOCKET_IP = process.env.REACT_APP_FLEXDRONE_IP;
+const SOCKET_PORT = process.env.REACT_APP_FLEXDRONE_PORT;
+
 //const ANDROID_IP = process.env.REACT_APP_ANDROID_IP;
 
 console.log(SOCKET_IP)
 
-const socket = io(`http://${SOCKET_IP}:4001/`);
+const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}/`);
 
 const options = [
   {

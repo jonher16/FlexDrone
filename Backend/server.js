@@ -14,7 +14,7 @@ require("dotenv").config();
 //SocketIo Server Declarations
 
 const ip = process.env.SERVER_IP;
-const port = 4001;
+const port = process.env.SERVER_PORT;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
