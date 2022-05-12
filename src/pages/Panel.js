@@ -26,7 +26,11 @@ import { useEffect } from "react";
 //   link: "/index.html?id=i&group=sala1",
 // }
 
-const SOCKET_IP = process.env.REACT_APP_SOCKET_IP;
+const SOCKET_IP = process.env.REACT_APP_FLEXDRONE_IP;
+const ANDROID_IP = process.env.REACT_APP_ANDROID_IP;
+
+console.log(SOCKET_IP, ANDROID_IP)
+
 const socket = io(`http://${SOCKET_IP}:4001/`);
 
 const options = [
@@ -83,7 +87,7 @@ export default function Panel({}) {
                 
               </Row>
             </Container>
-          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket}/>)}
+          </div></>) : choice == "Tello" ? (<Tello socket={socket} tellostatus={telloStatus} />) : (<ASDK socket={socket} SOCKET_IP={SOCKET_IP} ANDROID_IP={ANDROID_IP}/>)}
           
         
     </>
