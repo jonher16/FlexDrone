@@ -47,6 +47,8 @@ var FLAG_ASDK_ONLINE = false;
 var drone;
 var telemetry;
 
+var ANDROID_IP = process.env.ANDROID_IP
+
 //TELLO VIDEO STREAM SERVER
 
 const STREAM_PORT = 3001;
@@ -211,6 +213,7 @@ function stopTello(){
 io.on("connection", (socket) => {
   console.log("A user has connected with id " + socket.id);
   io.emit("msg", "Welcome, new user");
+  io.emit("addresses", {android: ANDROID_IP});
   if(FLAG_TELLO_ONLINE === true){
     io.emit("tellostatus", true);
   } else {
