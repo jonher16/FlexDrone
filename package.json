@@ -2,6 +2,7 @@
   "name": "flexdrone",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@cycjimmy/jsmpeg-player": "^5.1.1",
     "@testing-library/jest-dom": "^5.15.1",
