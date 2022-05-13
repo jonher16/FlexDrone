@@ -10,7 +10,7 @@ export default class DraggableVideo extends Component {
     var SOCKET_PORT = this.props.SOCKET_PORT
     console.log("COMPONENT SOCKET IP", SOCKET_IP, SOCKET_PORT)
 
-    const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}`)
+    const socket = io(`https://${SOCKET_IP}:${SOCKET_PORT}`)
     console.log("Camera controller connected to socket")
     var lastX, lastY;
 
