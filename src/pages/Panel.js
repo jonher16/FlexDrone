@@ -17,7 +17,7 @@ const SOCKET_PORT = process.env.REACT_APP_FLEXDRONE_PORT;
 
 console.log(SOCKET_IP)
 
-const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}/`);
+const socket = io(`https://${SOCKET_IP}:${SOCKET_PORT}/`);
 
 const options = [
   {
