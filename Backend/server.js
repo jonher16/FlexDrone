@@ -3,10 +3,12 @@
 //REQUIREMENTS
 
 const http = require("http"); //Require http to create a http server
+const Https = require("https");
 const dgram = require("dgram"); //Packet to interact via UDP on Node.js
 const wait = require("waait"); //Packet for waiting an amount of time
 const socket = require("socket.io"); //Packet to send commands over SocketIo
 const WebSocket = require("ws"); //Packet to send video over WebSocket
+const Fs = require("fs");
 const { NONAME } = require("dns");
 const spawn = require("child_process").spawn; //Packet to spawn ffmpeg over a separate process
 require("dotenv").config();
@@ -15,10 +17,26 @@ require("dotenv").config();
 
 const ip = process.env.SERVER_IP;
 const port = process.env.SERVER_PORT;
-const server = http.createServer((req, res) => {
+const KEY_LOCATION = process.env.KEY_LOCATION
+const CERT_LOCATION = process.env.CERT_LOCATION
+
+const server = Https.createServer({
+  key: Fs.readFileSync(KEY_LOCATION),
+  cert: Fs.readFileSync(CERT_LOCATION),
+});
+
+server.on("request", (req, res) => {
+  // console.log(
+  //   "Stream Connection on " +
+  //     STREAM_PORT +
+  //     " from: " +
+  //     req.socket.remoteAddress +
+  //     ":" +
+  //     req.socket.remotePort
+  // );
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
-  res.end("Socket.io server");
+  res.end("Certificates accepted. You may now return to the FlexAxis panel.");
 });
 
 const io = require("socket.io")(server, {
