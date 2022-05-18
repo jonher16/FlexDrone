@@ -25,7 +25,8 @@ For linux machines:
 
 ## Configuration
 
-### TELLO MODULE
+### TELLO module
+
 The IP address of the server can be easily changed in the .env files, located in both Backend and src folders.
 For using the Tello module, please go to frontend environment file (/.env) and deactivate HTTPS, as well as change server IP to localhost :
 ```
@@ -44,7 +45,6 @@ The file corresponding to the Tello server is serverTello.js. In order to run it
 For the ASDK module, you have to enable HTTPS. Go to frontend environment file and change HTTPS to true
 The file corresponding to ASDK server is server.js. In order to run it, execute:
 ```node server.js```
-
 
 
 
