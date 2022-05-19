@@ -13,11 +13,9 @@ import { useEffect } from "react";
 const SOCKET_IP = process.env.REACT_APP_FLEXDRONE_IP;
 const SOCKET_PORT = process.env.REACT_APP_FLEXDRONE_PORT;
 
-//const ANDROID_IP = process.env.REACT_APP_ANDROID_IP;
-
 console.log(SOCKET_IP)
 
-const socket = io(`https://${SOCKET_IP}:${SOCKET_PORT}/`);
+const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}/`);
 
 const options = [
   {
@@ -42,19 +40,14 @@ export default function Panel({}) {
 
   useEffect(() => {
     socket.on("tellostatus", (status) => {
-      console.log("Tello status from server",status)
+      //Receives from server whether tello connection has been already started
       setTelloStatus(status)
     });
     socket.on("addresses", (addresses) => {
-      console.log("Adresses from server", addresses)
+      // Receives addresses object from server (for now only contains Android app IP address) and sets it into the useState
       setAdresses(addresses)
     });
   }, [])
-
-  useEffect(() => {
-    console.log(addresses)
-  },[addresses])
-  
 
   return (
     <>

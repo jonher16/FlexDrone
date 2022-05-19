@@ -8,16 +8,12 @@ export default class DraggableVideo extends Component {
 
     var SOCKET_IP = this.props.SOCKET_IP
     var SOCKET_PORT = this.props.SOCKET_PORT
-    console.log("COMPONENT SOCKET IP", SOCKET_IP, SOCKET_PORT)
 
-    const socket = io(`https://${SOCKET_IP}:${SOCKET_PORT}`)
-    console.log("Camera controller connected to socket")
+    const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}`)
     var lastX, lastY;
 
     var $box = $("#video-canvas");
-    console.log("ready");
     $box.css("cursor", "move");
-
 
     var flag_move = false;
     var lastDirection = "none";
@@ -26,16 +22,12 @@ export default class DraggableVideo extends Component {
     var oldy = 0;
 
     const mousemovemethod = (e) => {
+
       $box.css("cursor", "grab");
-      // console.log("lastDirection", lastDirection);
-      // console.log("flag ", flag_move);
-      // console.log(oldx, oldy);
-      // console.log(e.pageX, e.pageY);
 
       if (e.pageX > oldx && e.pageY == oldy) {
         if (
           flag_move === false
-          // || (flag_move === true && lastDirection !== "right")
         ) {
           flag_move = true;
           direction = "right";
@@ -45,7 +37,6 @@ export default class DraggableVideo extends Component {
       } else if (e.pageX == oldx && e.pageY > oldy) {
         if (
           flag_move === false
-          // || (flag_move === true && lastDirection !== "down")
         ) {
           flag_move = true;
           direction = "down";
@@ -55,7 +46,6 @@ export default class DraggableVideo extends Component {
       } else if (e.pageX == oldx && e.pageY < oldy) {
         if (
           flag_move === false
-          // || (flag_move === true && lastDirection !== "up")
         ) {
           flag_move = true;
           direction = "up";
@@ -65,7 +55,6 @@ export default class DraggableVideo extends Component {
       } else if (e.pageX < oldx && e.pageY == oldy) {
         if (
           flag_move === false
-          // || (flag_move === true && lastDirection !== "left")
         ) {
           flag_move = true;
           direction = "left";
@@ -79,17 +68,15 @@ export default class DraggableVideo extends Component {
       lastDirection = direction;
     };
 
-    $box.on("wheel", function (e) {
-      var delta = e.originalEvent.deltaY / Math.abs(e.originalEvent.deltaY);
-      //console.log(delta)
-      if (delta == -1) {
-        //console.log("up")
-        socket.emit("uxcommand", "zoomin");
-      } // going up
-      else {
-        socket.emit("uxcommand", "zoomout");
-      }
-    });
+    // $box.on("wheel", function (e) {
+    //   var delta = e.originalEvent.deltaY / Math.abs(e.originalEvent.deltaY);
+    //   if (delta == -1) {
+    //     socket.emit("uxcommand", "zoomin");
+    //   }
+    //   else {
+    //     socket.emit("uxcommand", "zoomout");
+    //   }
+    // });
 
     $box.on("touchstart mousedown", function (e) {
       $box.on("touchmove mousemove", mousemovemethod);
@@ -108,21 +95,21 @@ export default class DraggableVideo extends Component {
   render() {
 
     const ANDROID_IP = this.props.ANDROID_IP;
-    console.log("COMPONENT ANDROID IP", ANDROID_IP);
+    // console.log("COMPONENT ANDROID IP", ANDROID_IP);
     return (
       <div className="iframe-container">
-      <iframe
+        <iframe
           src={`http://${ANDROID_IP}:8080`}
           className="responsive-iframe"
-          style={{zIndex: "0"}}
+          style={{ zIndex: "0" }}
         />
         <div className="responsive-iframe border " onMouseDown={this.handleEvent}
           onMouseUp={this.handleEvent}
           onDrag={this.handleDrag}
           id="video-canvas"
-          style={{zIndex: "99"}}
-          >
-      </div>
+          style={{ zIndex: "99" }}
+        >
+        </div>
       </div>
     );
   }
