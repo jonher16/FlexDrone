@@ -241,6 +241,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("A user has disconnected");
+    printStatus("A user has disconnected");
   });
 });
