@@ -27,8 +27,8 @@ For linux machines:
 
 Currently, the architecure of the system is the following one:
 
-serverTello.js ---> HTTP Socket.IO server the frontend Tello module connects to.
-server.js ---> 1. HTTPS Socket.IO server the frontend ASDK module connnects to.
+- serverTello.js ---> HTTP Socket.IO server the frontend Tello module connects to.
+- server.js ---> 1. HTTPS Socket.IO server the frontend ASDK module connnects to.
                2. HTTP Socket.IO server the UX SDK module connects to.
 
 Firstly both server files were merged into one, but due to the fact that the tello module is a test module (and has no commercial interest) it was decided to put it apart. 
