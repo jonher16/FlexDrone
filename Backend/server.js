@@ -1,8 +1,6 @@
-///Backend/server.js
-
 //REQUIREMENTS
 
-const http = require("http"); //Require http to create a http server
+const http = require("http");
 const Https = require("https");
 const Fs = require("fs");
 const spawn = require("child_process").spawn; //Packet to spawn ffmpeg over a separate process
@@ -10,11 +8,13 @@ require("dotenv").config();
 
 //SocketIo Server Declarations
 
-const ip = process.env.SERVER_IP;
-const port = process.env.SERVER_PORT;
-const port2 = process.env.ANDROID_SERVER_PORT
-const KEY_LOCATION = process.env.KEY_LOCATION
-const CERT_LOCATION = process.env.CERT_LOCATION
+const ip = process.env.SERVER_IP; //FlexDrone backend IP
+const port = process.env.SERVER_PORT;//Port for Socket.io connection between frontend and backend
+const port2 = process.env.ANDROID_SERVER_PORT//Port for Socket.io connection between backend and Android UX app
+const KEY_LOCATION = process.env.KEY_LOCATION//Location for HTTPS certificates key.pem file
+const CERT_LOCATION = process.env.CERT_LOCATION//Location for HTTPS certificates cert.pem file
+
+//FRONTEND-BACKEND Socket.io connection server
 
 const server = Https.createServer({
   key: Fs.readFileSync(KEY_LOCATION),
@@ -28,18 +28,7 @@ server.on("request", (req, res) => {
   res.end("Certificates accepted. You may now return to the FlexDrone panel.");
 });
 
-const server2 = http.createServer(function (req, res) {
- 
-  })
-
 const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
-
-const io2 = require("socket.io")(server2, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
@@ -49,11 +38,26 @@ const io2 = require("socket.io")(server2, {
 server.listen(port, ip, () => {
   console.log(`Server running at https://${ip}:${port}/`);
 });
+
+//BACKEND-ANDROID Socket.io connection server
+
+const server2 = http.createServer(function (req, res) {
+ 
+})
+
+const io2 = require("socket.io")(server2, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+
 server2.listen(port2, ip, () => {
   console.log(`Server running at http://${ip}:${port2}/`);
 });
 
-//VARIABLE DECLARATIONS
+//UTILITY VARIABLE DECLARATIONS
 
 var FLAG_ASDK_ONLINE = false;
 var ANDROID_IP = process.env.ANDROID_IP
@@ -67,6 +71,7 @@ function printStatus(msg){
 
 //SOCKET.IO LISTENERS
 
+//FRONTEND-BACKEND listeners
 io.on("connection", (socket) => {
   console.log("A user has connected with id " + socket.id);
   io.emit("addresses", {android: ANDROID_IP});
@@ -87,9 +92,12 @@ io.on("connection", (socket) => {
   });
 });
 
+
+//BACKEND-ANDROID listeners
+
 io2.on("connection", (socket2) => {
 
-  console.log("UX app has connected with id " + socket2.id);
+  printStatus("UX app has connected with id " + socket2.id);
   io2.emit("msg", "Connection with FlexDrone server established.");
   io2.emit("uxconnection")
   FLAG_ASDK_ONLINE = true;
@@ -99,7 +107,7 @@ io2.on("connection", (socket2) => {
   });
 
   socket2.on("disconnect", () => {
-    console.log("UX app has disconnected");
+    printStatus("UX app has disconnected");
     FLAG_ASDK_ONLINE = false
   });
 });
