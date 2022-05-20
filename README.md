@@ -18,7 +18,7 @@ cd Backend
 npm install
 ```
 
-The machine where FlexDrone is deployed needs to have ffmpeg installed.
+The machine where FlexDrone is deployed needs to have ffmpeg installed (in case you want to use Tello module)
 For linux machines:
 
 ```sudo apt install ffmpeg```
