@@ -9,7 +9,7 @@ export default class DraggableVideo extends Component {
     var SOCKET_IP = this.props.SOCKET_IP
     var SOCKET_PORT = this.props.SOCKET_PORT
 
-    const socket = io(`http://${SOCKET_IP}:${SOCKET_PORT}`)
+    const socket = io(`https://${SOCKET_IP}:${SOCKET_PORT}`)
     var lastX, lastY;
 
     var $box = $("#video-canvas");
@@ -99,7 +99,7 @@ export default class DraggableVideo extends Component {
     return (
       <div className="iframe-container">
         <iframe
-          src={`http://${ANDROID_IP}:8080`}
+          src={`https://${ANDROID_IP}:8080`}
           className="responsive-iframe"
           style={{ zIndex: "0" }}
         />
