@@ -193,6 +193,8 @@ function sendStartCommand() {
   timeout = setTimeout(sendStartCommand, 20000);
 }
 
+//Function to close UDP ports and stop the video stream
+
 function stopTello(){
   printStatus("Stoping Tello connection")
   killTelloStream()
@@ -210,21 +212,23 @@ io.on("connection", (socket) => {
 
   console.log("A user has connected with id " + socket.id);
   io.emit("msg", "Welcome, new user");
-  if(FLAG_TELLO_ONLINE === true){
+  if(FLAG_TELLO_ONLINE === true){ //Emit status of Tello to client whether it is connected or not
     io.emit("tellostatus", true);
   } else {
     io.emit("tellostatus", false);
   }
+
   socket.on("tellostart", () => {
     startTello();
     io.emit("tellostatus", true)
   });
+
   socket.on("tellostop", () => {
     stopTello();
     io.emit("tellostatus", false)
   });
 
-  socket.on("command", (command) => {
+  socket.on("command", (command) => { //Receive command from client and send through UDP port
     
     if (FLAG_TELLO_ONLINE === true) {
       printStatus("Comando " + command + " recibido.");
