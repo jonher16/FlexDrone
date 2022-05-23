@@ -21,15 +21,15 @@ const server = Https.createServer({
   cert: Fs.readFileSync(CERT_LOCATION),
 });
 
-server.on("request", (req, res) => {
+server.on("request", (req, res) => { //What the server returns on a request
 
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
-  res.end("Certificates accepted. You may now return to the FlexDrone panel.");
+  res.end("Certificates accepted. You may now return to the FlexDrone panel."); //If there's a Socket.io connection error, most likely you'll need to do a request on this port and accept certificates until you get this message
 });
 
 const io = require("socket.io")(server, {
-  cors: {
+  cors: { 
     origin: "*",
     methods: ["GET", "POST"],
   },
@@ -77,12 +77,12 @@ io.on("connection", (socket) => {
   io.emit("addresses", {android: ANDROID_IP});
   io.emit("msg", "Connection with FlexDrone server established.");
 
-  socket.on("uxcommand", (command) => {
+  socket.on("uxcommand", (command) => { //Socket.io channel for recieving commands from the client
     if (FLAG_ASDK_ONLINE == true){
     console.log(`Command ${command} received. Sending to app.`)
-    io2.emit("gimbalcommand", command)
+    io2.emit("gimbalcommand", command) //Socket.io channel for sending commands to the UX app
   } else {
-    io.emit("msg", "The command could not be sent: no connection with UX app");
+    io.emit("msg", "The command could not be sent: no connection with UX app"); //Send to client in case thee is no connection to UX app
     console.log(`Command ${command} received but there is no connection to UX app.`)
   }
   });
@@ -98,8 +98,8 @@ io.on("connection", (socket) => {
 io2.on("connection", (socket2) => {
 
   printStatus("UX app has connected with id " + socket2.id);
-  io2.emit("msg", "Connection with FlexDrone server established.");
-  io2.emit("uxconnection")
+  io2.emit("msg", "Connection with FlexDrone server established."); //Send to client whenever there is a connection from UX app
+  io2.emit("uxconnection") //Send to UX app for it to know there is a connection with server
   FLAG_ASDK_ONLINE = true;
 
   socket2.on("uxmsg", (msg) => {
