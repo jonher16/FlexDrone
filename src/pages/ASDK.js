@@ -19,18 +19,18 @@ const ASDK = ({ socket, ANDROID_IP, SOCKET_IP, SOCKET_PORT }) => {
     console.log("Sending command", command);
   };
 
-  const handleStream = (e) => {
-    e.preventDefault();
-    socket.emit("uxstream")
-    console.log("Sending start stream")
-  }
+  // const handleStream = (e) => {
+  //   e.preventDefault();
+  //   socket.emit("uxstream")
+  //   console.log("Sending start stream")
+  // }
 
   return (
     <div className="w-100">
 
       <DraggableVideo socket={socket} ANDROID_IP={ANDROID_IP} SOCKET_IP={SOCKET_IP} SOCKET_PORT={SOCKET_PORT}/>
       {/* <GimbalControl onClick={handleCommand} width="100%" /> */}
-      <Button onClick={e=>handleStream(e)}>Start stream</Button>
+      {/* <Button onClick={e=>handleStream(e)}>Start stream</Button> */}
       
     </div>
   );

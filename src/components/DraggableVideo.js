@@ -21,6 +21,7 @@ export default class DraggableVideo extends Component {
     var oldx = 0;
     var oldy = 0;
 
+    //Functions that control mouse drag and send command to UX app
     const mousemovemethod = (e) => {
 
       $box.css("cursor", "grab");
@@ -98,12 +99,13 @@ export default class DraggableVideo extends Component {
     // console.log("COMPONENT ANDROID IP", ANDROID_IP);
     return (
       <div className="iframe-container">
-        <iframe
-          src={`https://${ANDROID_IP}:8080`}
+        <img
+          src="http://172.20.85.253:8080/stream.mjpeg"
           className="responsive-iframe"
           style={{ zIndex: "0" }}
         />
-        <div className="responsive-iframe border " onMouseDown={this.handleEvent}
+        <div className="responsive-iframe border " 
+          onMouseDown={this.handleEvent}
           onMouseUp={this.handleEvent}
           onDrag={this.handleDrag}
           id="video-canvas"
