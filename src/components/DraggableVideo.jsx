@@ -103,7 +103,6 @@ export default class DraggableVideo extends Component {
           onMouseUp={this.handleEvent}
           onDrag={this.handleDrag}
           id="video-canvas"
-          style={{ zIndex: "99" }}
         >
         </div>
       </div>

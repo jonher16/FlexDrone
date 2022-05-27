@@ -15,11 +15,11 @@ const ASDK = ({ socket, ANDROID_IP, SOCKET_IP, SOCKET_PORT, ANDROID_FFMPEG_PORT 
     socket.on("msg", (msg) => console.log("From server -->", msg));
   }, []);
 
-  const handleCommand = (e, command) => {
-    e.preventDefault();
-    socket.emit("uxcommand", command);
-    console.log("Sending command", command);
-  };
+  // const handleCommand = (e, command) => {
+  //   e.preventDefault();
+  //   socket.emit("uxcommand", command);
+  //   console.log("Sending command", command);
+  // };
 
   useEffect(() => {
     if (ANDROID_FFMPEG_PORT){
@@ -30,15 +30,15 @@ const ASDK = ({ socket, ANDROID_IP, SOCKET_IP, SOCKET_PORT, ANDROID_FFMPEG_PORT 
       console.log(player);}
   }, []);
 
-  // const handleStream = (e) => {
-  //   e.preventDefault();
-  //   socket.emit("uxstream")
-  //   console.log("Sending start stream")
-  // }
+  const handleRestart = (e) => {
+    e.preventDefault();
+    socket.emit("restartstream")
+    console.log("Sending restart stream")
+  }
 
   return (
     <div className="w-100">
-
+      <Button className="floating_button" onClick={e=>handleRestart(e)}>Restart stream</Button>
       <DraggableVideo socket={socket} ANDROID_IP={ANDROID_IP} SOCKET_IP={SOCKET_IP} SOCKET_PORT={SOCKET_PORT}/>
       {/* <GimbalControl onClick={handleCommand} width="100%" /> */}
       {/* <Button onClick={e=>handleStream(e)}>Start stream</Button> */}

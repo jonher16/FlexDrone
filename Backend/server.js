@@ -167,10 +167,55 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("restartstream", () => {
+        try {
+            io.emit("msg", "Stream closed. Restarting stream...");
+            process.kill(pid, "SIGINT");
+            console.log("Stream closed.");
+        } catch (error) {
+            console.log(error);
+            io.emit("msg", error);
+        }
+        setTimeout(function() { //Start stream after 3s
+            var args = [
+                "-i",
+                `http:${ANDROID_IP}:8080/stream.mjpeg`,
+                "-r",
+                "30",
+                "-s",
+                "960x720",
+                "-codec:v",
+                "mpeg1video",
+                "-b",
+                "800k",
+                "-f",
+                "mpegts",
+                `https://127.0.0.1:${ANDROID_FFMPEG_PORT}/stream`,
+            ];
+
+            // Spawn an ffmpeg instance
+            try {
+                stream = spawn("ffmpeg", args);
+                pid = stream.pid;
+                io.emit("msg", "Stream started.");
+                console.log("Stream started.");
+                //Uncomment if you want to see ffmpeg stream info
+                // stream.stderr.pipe(process.stderr);
+                // stream.on("exit", function (code) {
+                //   console.log("Failure", code);
+                // });
+            } catch (error) {
+                io.emit("msg", error);
+                console.log(error);
+            }
+        }, 3000);
+    });
+
     socket.on("disconnect", () => {
         console.log("A user has disconnected");
     });
 });
+
 
 
 //BACKEND-ANDROID listeners
