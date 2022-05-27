@@ -20,7 +20,7 @@ export default class DraggableVideo extends Component {
 
       $box.css("cursor", "grab");
 
-      if (e.pageX > oldx && e.pageY == oldy) {
+      if (e.pageX > oldx && e.pageY === oldy) {
         if (
           flag_move === false
         ) {
@@ -29,7 +29,7 @@ export default class DraggableVideo extends Component {
           console.log(direction);
           socket.emit("uxcommand", "RIGHT");
         }
-      } else if (e.pageX == oldx && e.pageY > oldy) {
+      } else if (e.pageX === oldx && e.pageY > oldy) {
         if (
           flag_move === false
         ) {
@@ -38,7 +38,7 @@ export default class DraggableVideo extends Component {
           console.log(direction);
           socket.emit("uxcommand", "DOWN");
         }
-      } else if (e.pageX == oldx && e.pageY < oldy) {
+      } else if (e.pageX === oldx && e.pageY < oldy) {
         if (
           flag_move === false
         ) {
@@ -47,7 +47,7 @@ export default class DraggableVideo extends Component {
           console.log(direction);
           socket.emit("uxcommand", "UP");
         }
-      } else if (e.pageX < oldx && e.pageY == oldy) {
+      } else if (e.pageX < oldx && e.pageY === oldy) {
         if (
           flag_move === false
         ) {
@@ -89,7 +89,7 @@ export default class DraggableVideo extends Component {
 
   render() {
 
-    const ANDROID_IP = this.props.ANDROID_IP;
+    //const ANDROID_IP = this.props.ANDROID_IP;
     // console.log("COMPONENT ANDROID IP", ANDROID_IP);
     return (
       <div className="iframe-container">
